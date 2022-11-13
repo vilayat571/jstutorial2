@@ -1,44 +1,46 @@
-var navbar = document.getElementById('navbar');
-navbar.style.width = '100%';
-navbar.style.height = '50px';
-navbar.style.backgroundColor = '#333333';
+const form = document.querySelector('form');
+const input = document.querySelector('input');
+const btnAll = document.querySelector('#btnDeleteAll');
+const taskList = document.querySelector('ul');
 
-let navbarNodes = document.querySelector('#navbar').childNodes;
-let list = document.querySelector('#navbar').firstElementChild;
-var lis = list.childNodes;
-var lis = list.children;
-for (let i = 0; i < list.children.length; i++) {
-    list.children[i].style.listStyleType = 'none';
-};
+events();
 
-let navs = ['home','about','contact','sign in','sign up'];
+function events() {
 
-let items = document.getElementsByClassName("item");
-for (let i = 0; i < items.length; i++) {
-    items[i].textContent = navs[i];
-};
-
-let item = document.querySelectorAll('.item');
-
-for (let i = 0; i < item.length; i++) {
-    item[i].classList.add('li_style')
-};
-
-document.getElementById('list').style.display = 'flex';
-document.querySelector('#list').style.width = '100%'
-document.getElementById('list').style.justifyContent = 'space-between';
-document.getElementById('list').style.alignContent = 'center';
-let nav;
-var navbar = document.querySelector('#navbar');
-nav = navbar.firstElementChild;
-for (let i = 0; i < nav.children.length; i++) {
-    nav.children[i].style.textTransform = 'capitalize';
+    form.addEventListener('submit',additems);
+    taskList.addEventListener('click',deleteItem);
 }
-nav.style.color = '#fff';
 
-var child = document.querySelector('#navbar').children[0];
-child.style.height = '100%';
-child.style.alignItems = 'center'
+function additems(e) {
+    e.preventDefault();
 
-var li = document.querySelector('#li');
-li.parentNode.style.padding = '6px 15px';
+    if (input.value === '') {
+        alert('add an item')
+    }
+
+    const li = document.createElement('li');
+    li.className = 'list-group-item list-group-item-secondary'
+    li.appendChild(document.createTextNode(input.value))
+    const a = document.createElement('a');
+    a.classList = 'delete-item float-right';
+    a.setAttribute('href','#');
+    a.innerHTML = '<i class="fas fa-times"></i>';
+    li.appendChild(a);
+    taskList.appendChild(li);
+    input.value = '';
+}
+
+function deleteItem(e) {
+    e.preventDefault();
+    if (e.target.className === 'fas fa-times') {
+
+        e.target.parentElement.parentElement.remove();
+    }
+}
+
+btnAll.addEventListener('click',(e) => {
+    e.preventDefault();
+    for(let i=0;i<taskList.children.length;i++){
+        taskList.children.remove()
+    }
+})
